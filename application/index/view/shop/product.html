@@ -1,0 +1,15 @@
+			<ul class="product">
+				{volist name="producta" id="v"}
+				<li>
+					<a href="{:url('Shop/shop_goods')}?pro={$v.product_id}&att={$v.attribute_id}"><img src="{$v.path}" style="width:278px;height: 183px;" /></a>
+					<h1>￥{$v.price}</h1>
+					<p>
+						<a href="{:url('Shop/shop_goods')}?pro={$v.product_id}&att={$v.attribute_id}">
+							<span>{$v.product_name}</span> {$v.attribute_name}
+						</a>
+					</p>
+				</li>
+				{/volist}
+			</ul>
+			<!--分页-->
+			{$producta->render()}

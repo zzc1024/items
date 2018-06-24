@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+{block name='head'}
+{/block}
+
+	<body>
+		<!--头部-->
+		<div class="header">
+			<!--最上边的灰色导航-->
+			<div class="top">
+				<div class="container">
+					<!--灰色部分左边文字-->
+					<span>亲，欢迎来到Maxwell House咖啡商城!</span>
+					<!--灰色部分右边a标签-->
+					<div>
+						{eq name="user_id" value="0"}
+						<a href="{:url('Login/index')}">请登录</a>
+						<a href="{:url('Login/register')}">快速注册</a>
+						{else/}
+						<a href="{:url('Users/index')}">{$user_name}</a>
+						<a href="{:url('Users/index')}">会员中心</a>
+						<a href="{:url('Login/logout')}">退出登录</a>
+						{/eq}
+						<a href="##">帮助中心</a>
+					</div>
+				</div>
+			</div>
+			<!--头部中间部分-->
+			<div class="middle">
+				<div>
+					<!--logo-->
+					<a href="{:url('Index/index')}"><img src="\static\img\logo.png" /></a>
+					<!--搜索框-->
+					<div class="search">
+						<form action="{:url('Shop/shop_list')}" method="get">
+							<input type="text" name="contents" />
+							<input type="submit" value="搜索" />
+						</form>
+					</div>
+
+					<!--购物车-->
+					<div class="shop_carts">
+						<a href="{:url('Proess/sp_base')}?proess=4"><img src="\static\img\shop(index).png" /><span>我的购物车</span></a>
+						<a href="{:url('Proess/sp_base')}?proess=4" class="num">{$shopcart_count}</a>
+					</div>
+					<!--搜索框下面的文字-->
+
+				</div>
+			</div>
+			<!--头部导航部分-->
+			<div class="nav">
+				<div>
+					<div class="left">
+						<a href="##"> 全部商品分类 <img src="\static\img\jiankuohao.png" alt="" /></a>
+						<ul class="clearfix">
+							{foreach name="classify" item="v" key="k"}
+							<li>
+								<h2>{$v.name}</h2>
+								<ul>
+									{volist name="v.next" id="vo"}
+									<li>
+										<a href="{:url('Shop/shop_list')}?classifyid={$vo.classify_id}">{$vo.name}</a>
+									</li>
+									{/volist}
+								</ul>
+							</li>
+							{/foreach}
+						</ul>
+					</div>
+					<ul>
+						<li>
+							<a href="{:url('Index/index')}">首页</a>
+						</li>
+						{volist name="series" id="v"}
+						<li>
+							<a href="{:url('Shop/shop_list')}?seriesid={$v.id}">{$v.name}</a>
+						</li>
+						{/volist}
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!--第二部分-->
+{block name='content'}
+{/block}
+
+		<!--最底部-->
+		<div class="footer">
+			<!--底部上面-->
+			<div class="footer_top">
+				<ul class="footer_top_left">
+					<li>
+						<h3>新手指南</h3>
+						<ul>
+							<li>
+								<a href="##">鸿运卡使用说明</a>
+							</li>
+							<li>
+								<a href="##">购物卷使用说明</a>
+							</li>
+							<li>
+								<a href="##">购物流程</a>
+							</li>
+							<li>
+								<a href="##">客户注册</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h3>支付说明</h3>
+						<ul>
+							<li>
+								<a href="##">优惠卷使用方法</a>
+							</li>
+							<li>
+								<a href="##">常见支付问题</a>
+							</li>
+							<li>
+								<a href="##">支付方式</a>
+							</li>
+							<li>
+								<a href="##">预存款支付</a>
+							</li>
+						</ul>
+
+					</li>
+					<li>
+						<h3>配送问题</h3>
+						<ul>
+							<li>
+								<a href="##">常见配送问题</a>
+							</li>
+							<li>
+								<a href="##">配送范围</a>
+							</li>
+							<li>
+								<a href="##">运送方式及运费方式</a>
+							</li>
+							<li>
+								<a href="##">商品验货与签收</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h3>售后服务</h3>
+						<ul>
+							<li>
+								<a href="##">退款说明</a>
+							</li>
+							<li>
+								<a href="##">办理退换货</a>
+							</li>
+							<li>
+								<a href="##">退换货政策</a>
+							</li>
+							<li>
+								<a href="##">放心消费</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h3>关于我们</h3>
+						<ul>
+							<li>
+								<a href="##">了解我们</a>
+							</li>
+							<li>
+								<a href="##">联系我们</a>
+							</li>
+							<li>
+								<a href="##">诚聘英才</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="footer_top_right">
+					<li>
+						<span>服务热线:(8:000~22:00)</span>
+						<h4>400-602-1112</h4>
+					</li>
+					<li>
+						<span>服务邮箱</span>
+						<h4>service@hodo.cn</h4>
+					</li>
+
+				</ul>
+			</div>
+			<!--底部下面-->
+			<div class="footer_bot">
+				<ul class="pic">
+					<li>
+						<a href="##"><img src="\static\img\di1.png" alt="" /></a>
+					</li>
+					<li>
+						<a href="##"><img src="\static\img\di2.png" alt="" /></a>
+					</li>
+					<li>
+						<a href="##"><img src="\static\img\di3.png" alt="" /></a>
+					</li>
+					<li>
+						<a href="##"><img src="\static\img\di4.png" alt="" /></a>
+					</li>
+				</ul>
+				<ul class="word">
+					<li>苏ICP备14039882号-4</li>
+					<li>苏B1-20150021</li>
+					<li>麦斯威尔有限公司</li>
+				</ul>
+			</div>
+		</div>
+		{block name="footer"}
+		{/block}
+	</body>
+
+</html>

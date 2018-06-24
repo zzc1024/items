@@ -1,0 +1,109 @@
+{extend name="common/base" /}
+
+{block name="head"}
+<title>新建网站角色 - 管理员管理 - H-ui.admin v3.1</title>
+<meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
+<meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+</head>
+<body>
+<article class="page-container">
+  <form class="form form-horizontal" id="form-admin-role-add">
+    <div class="row cl">
+      <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色名称：</label>
+      <div class="formControls col-xs-8 col-sm-9">
+        <input type="text" class="input-text" value="{$res.role_name}" placeholder="" id="roleName" name="role_name">
+      </div>
+    </div>
+    </div>
+    <div class="row cl">
+      <label class="form-label col-xs-4 col-sm-3">权限：</label>
+      <div class="formControls col-xs-8 col-sm-9">
+        <dl class="permission-list">
+        {foreach name="result" item="v" key="k"}
+          <dt>
+            <input type="hidden" name="role_id" value="{$res.role_id}">
+            {range name="$v.menu_id" value="$res2.menu_id"}
+            <label><input type="checkbox" value="{$v.menu_id}" name="menu_id" id="user-Character-0-0" checked="checked">{$v.menu_name}</label>
+            {else/}
+            <label><input type="checkbox" value="{$v.menu_id}" name="menu_id" id="user-Character-0-0">{$v.menu_name}</label>
+            {/range}
+          </dt>
+          <dd>
+            <dl class="cl permission-list2">
+              <dt>
+                <label class=""></label>
+              </dt>
+              <dd>
+                <label class="">
+                {foreach name="$v['next']" item="vo" key="k1"}
+                {range name="$vo.menu_id" value="$res2.menu_id"}
+                  <input type="checkbox" value="{$vo.menu_id}" name="menu_id" id="user-Character-0-0-0" checked="checked">
+                  {$vo.menu_name}</label>
+                {else/}
+                   <input type="checkbox" value="{$vo.menu_id}" name="menu_id" id="user-Character-0-0-0">
+                  {$vo.menu_name}</label>
+                {/range}
+                {/foreach}
+              </dd>
+            </dl>
+          </dd>
+          {/foreach}
+        </dl>
+      </div>
+    </div>
+    <div class="row cl">
+      <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+        <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="role_add()"><i class="icon-ok"></i> 确定</button>
+      </div>
+    </div>
+  </form>
+</article>
+{/block}
+
+{block name="footer"}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript">
+
+
+
+function role_add(){
+  var checkID = [];
+
+  $("input[name='menu_id']:checked").each(function(i){
+             checkID[i] = $(this).val();
+         });
+  var data = { 
+    'role_id':$('[name="role_id"]').val(),
+    'role_name':$('[name="role_name"]').val(),
+    'menu_id':checkID
+  }
+
+  $.ajax({
+    url:'{:url(\'Roles/edit\')}',
+    type: 'post',
+    data: data,
+    dataType: 'json',
+
+    success: function(data){
+      if(data.code==1){
+        layer.msg(data.message,{icon:1,time:3000,btn:['确定']},function(){
+          parent.location.reload()
+        })
+      }else{
+        layer.msg(data.message,{icon:2,time:3000,btn:['确定']})
+      }
+    },
+
+    error:function(data) {
+        console.log(data.message);
+    },
+
+  })
+
+}
+
+</script>
+{/block}

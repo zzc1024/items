@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>订单详情</title>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/__INDEX__css/common.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/__INDEX__css/order_details.css" />
+		<script src="__STATIC__/__INDEX__js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/__INDEX__js/jquery-migrate-1.2.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/__INDEX__js/common.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+<body>
+
+				<!--右面上下部分-->
+				<div class="cont_right_bot" style="width:720px;">
+					<h3>商品清单</h3>
+					<table cellpadding="0" cellspacing="0">
+						<thead>
+							<tr>
+								<th>商品名称</th>
+								<th>价格</th>
+								<th>数量</th>
+								<th>总价</th>
+							</tr>
+						</thead>
+						<tbody>
+							{volist name="order_product" id="v"}
+							<tr>
+								<td>
+									<a href="javascript:vold(0)">
+										<img src="{$v.product_path}" style="width: 70px;height: 70px;" />
+									</a>
+									<p>
+										<a href="javascript:vold(0)">
+											{$v.product_name}
+										</a>
+									</p>
+
+								</td>
+								<td>￥{$v.product_price}</td>
+								<td>{$v.product_count}</td>
+								<td><span>￥{$v.amount}</span></td>
+							</tr>
+							{/volist}
+						</tbody>
+					</table>
+					<div>
+						<p>商品价格:<span>￥{$order_goods.amount_total}</span></p>
+						<p>总计:<span>￥{$order_goods.amount_total}</span></p>
+					</div>
+
+				</div>
+
+	</body>
+
+</html>

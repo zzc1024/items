@@ -1,0 +1,121 @@
+{extend name="common/base" /}
+
+{block name="head"}
+<title>会员列表</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 会员列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="text-c">
+		<form action="{:url('Users/search')}" method="post">
+			<input type="text" name="search" id="" placeholder="用户名、邮箱或手机" style="width:250px" class="input-text">
+			<button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+		</form>
+	</div><br>
+	<table class="table table-border table-bordered table-bg">
+		<thead>
+			<tr class="text-c">
+				<th width="40">用户ID</th>
+				<th width="150">用户名</th>
+				<th width="90">手机</th>
+				<th width="150">邮箱</th>
+				<th width="100">余额</th>
+				<th width="130">注册时间</th>
+				<th width="100">是否封号</th>
+				<th width="100">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		<!--thinkPHP5遍历name变量名，id是value值-->
+		{volist name="user" id="v"}
+			<tr class="text-c">
+				<td>{$v.id}</td>
+				<td>{$v.name}</td>
+				<td>{$v.tel}</td>
+				<td>{$v.email}</td>
+				<td>{$v.balance}</td>
+				<td>{$v.create_time}</td>
+				{eq name="$v.status" value='1'}
+				<td class="td-status"><span class="label label-success radius">正常</span></td>
+				<td class="td-manage"><a style="text-decoration:none" onClick="user_stop(this,'10001',{$v.id})" href="javascript:;" title="封号"><i class="Hui-iconfont">&#xe631;</i></a>
+				{else/}
+				<td class="td-status"><span class="label label-defaunt radius">已封号</span></td>
+				<td class="td-manage"><a style="text-decoration:none" onClick="user_start(this,id,{$v.id})" href="javascript:;" title="解封"><i class="Hui-iconfont">&#xe603;</i></a>
+				{/eq}</td>
+			</tr>
+		{/volist}
+		</tbody>
+	</table>
+	{$user->render()}
+</div>
+{/block}
+
+{block name="footer"}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__STATIC__/__VIEWCSS__lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="__STATIC__/__VIEWCSS__lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="__STATIC__/__VIEWCSS__lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript">
+
+
+
+/*封号*/
+function user_stop(obj,id,y){
+	var data = {
+		'id':y,
+		'status':'0',
+	}
+	layer.confirm('确认要封号吗？',function(){
+		$.ajax({
+			type: 'POST',
+			url: '{:url(\'Users/edit_status\')}',
+			dataType: 'json',
+			data: data,
+
+			success: function(data){
+				if(data.code == 1){
+					layer.msg('已封号!',{icon: 5,time:2000,btn:['确定']},function(){
+						location.reload()
+					});
+				}
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});	
+		
+	});
+}
+
+/*解封*/
+function user_start(obj,id,y){
+	var data = {
+		'id':y,
+		'status':'1',
+	}
+	layer.confirm('确认要解封吗？',function(){
+		$.ajax({
+			type: 'POST',
+			url: '{:url(\'Users/edit_status\')}',
+			dataType: 'json',
+			data: data,
+
+			success: function(data){
+				if(data.code == 1){
+					layer.msg('已解封!',{icon: 6,time:2000,btn:['确定']},function(){
+						location.reload()
+					});
+				}
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});	
+		
+	});
+}
+
+
+
+</script>
+{/block}

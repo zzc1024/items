@@ -1,0 +1,152 @@
+{extend name="common/base" /}
+{block name='head'}
+	<head>
+		<meta charset="UTF-8">
+		<title>登录</title>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/__INDEX__css/common.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/__INDEX__css/register.css" />
+		<script src="__STATIC__/__INDEX__js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/__INDEX__js/jquery-migrate-1.2.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/__INDEX__js/common.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+{/block}
+{block name="content"}
+		<!--第二部分-->
+		<div class="content">
+			<div class="cont_part">
+				<form>
+					<div>
+						<label for="name">用户名：</label>
+						<input type="text" id="name" name="name" />
+					</div>
+					<div>
+						<label for="name">账号：</label>
+						<input type="text" id="account" name="account" />
+					</div>
+					<div>
+						<label for="email"> Email：</label>
+						<input type="text" id="email" name="email" />
+					</div>
+					<div>
+						<label for="tel">手机号：</label>
+						<input type="text" id="tel" name="tel" />
+					</div>
+					<div>
+						<label for="yan"> 验证码：</label>
+						<input type="text" id="yan" name="code" />
+						<div onclick="getcode(this)" class="btn-info">获取验证码</div>
+					</div>
+					<div>
+						<label for="paddword">支付密码：</label>
+						<input type="password" name="paypassword" />
+					</div>
+					<div>
+						<label for="paddword">密码：</label>
+						<input type="password" id="paddword" name="password" />
+					</div>
+					<div>
+						<label for="confirm">确认密码：</label>
+						<input type="password" id="confirm" name="password2" />
+					</div>
+					<div>
+						<input type="checkbox" name="" id="radio" value="1" checked />
+						<label id="word" for="radio" class="word">我已阅读并同意 <a href="##">用户服务协议</a></label>
+						<!-- <label id="word" style="color:red;" dis>请勾选</label> -->
+					</div>
+					<input type="button" onclick="register()" value="免费注册">
+				</form>
+
+	                <div style="float: left;"> 
+	                   <button class="btn btn-info" type="button" id="getcode" onclick="send(this)"> 获取验证码</button>  
+	                    <span id="telephonenameTip"></span>  
+	                </div>  
+			</div>
+		</div>
+
+{/block}
+{block name="footer"}
+		<script type="text/javascript" src="__STATIC__/__ADMIN__lib/layer/2.4/layer.js"></script>
+		<script type="text/javascript">
+
+
+			function register(){
+				if($('input[type="checkbox"]').is(':checked')){
+					var data = {
+						'name':$('[name="name"]').val(),
+						'account':$('[name="account"]').val(),
+						'tel':$('[name="tel"]').val(),
+						'email':$('[name="email"]').val(),
+						'code':$('[name="code"]').val(),
+						'paypassword':$('[name="paypassword"]').val(),
+						'password':$('[name="password"]').val(),
+						'password2':$('[name="password2"]').val(),
+					}
+					$.ajax({
+						url:'{:url(\'Login/register_add\')}',
+						type:'post',
+						data:data,
+						dataType:'json',
+
+						success:function(data){
+							if(data.code==1){
+								layer.msg(data.message,{icon:1,time:3000,btn:['确定']},function(){
+									window.location.href=data.url
+								})
+							}else{
+								layer.msg(data.message,{icon:2,time:1500})
+							}
+						}
+					})
+				}
+			}
+time =60;
+
+			function getcode(obj){
+				if($(obj).attr('class')=='btn-info'){
+					var data = {
+						'tel':$('[name="tel"]').val(),
+					}
+
+					$.ajax({
+						url:'{:url(\'Login/get_code\')}',
+						type:'post',
+						data:data,
+						dataType:'json',
+						success:function(data){
+							if(data.code==1){
+								layer.msg(data.message,{icon:1,time:1500});
+								var timer =  setInterval(function () {  
+						            time--;  
+						            $(obj).text(time+'秒之后重发');  
+						            $(obj).removeClass('btn-info');  
+						            $(obj).addClass('btn-success');  
+						            $(obj).prop('disabled', true);  
+						  
+						            if(time==0){  
+						                //清除定时器  
+						                clearInterval(timer)  
+						                $(obj).removeClass('btn-success');  
+						                $(obj).addClass('btn-info');  
+						                $(obj).prop('disabled', false);  
+						  
+						                $(obj).text('获取验证码');  
+						                time=3;  
+						  
+						            }  
+						        },1000);
+							}else{
+								layer.msg(data.message,{icon:2,time:1500});
+							}
+						}
+
+					})
+				}
+			}
+
+
+
+
+
+		</script>
+{/block}

@@ -1,0 +1,105 @@
+{extend name="common/base" /}
+
+{block name="head"}
+<title>订单列表</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 订单列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="text-c">
+		<form action="{:url('Orders/search')}" method="post">
+			<input type="text" name="search" id="" placeholder="订单编号" style="width:250px" class="input-text">
+			<button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+		</form>
+	</div><br>
+	<table class="table table-border table-bordered table-bg">
+		<thead>
+			<tr class="text-c">
+				<th width="130">订单编号</th>
+				<th width="50">用户名</th>
+				<th width="50">收货人</th>
+				<th width="80">收货电话</th>
+				<th width="150">收货地址</th>
+				<th width="100">创建时间</th>
+				<th width="80">订单状态</th>
+				<th width="80">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		<!--thinkPHP5遍历name变量名，id是value值-->
+		{volist name="result" id="v"}
+			<tr class="text-c">
+				<td>{$v.order_no}</td>
+				<td>{$v.user_name}</td>
+				<td>{$v.address_name}</td>
+				<td>{$v.phone}</td>
+				<td>{$v.region}{$v.address}</td>
+				<td>{$v.create_time|date="Y-m-d H:i:s",###}</td>
+				<td>{$v.order_status|OrderStatus}</td>
+				<td class="td-manage">
+					{eq name="v.order_status" value="1"}
+					<a style="text-decoration:none" onClick="deliver('填写发货信息','{:url('Orders/deliver_info')}?id={$v.id}',800,500)" href="javascript:;" title="发货"><i class="Hui-iconfont">&#xe603;</i></a>
+					{/eq}
+					<a title="商品清单" href="javascript:;" onclick="goods('商品清单','{:url('Orders/goods_list')}?id={$v.id}',800,500)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+
+				</td>
+			</tr>
+		{/volist}
+		</tbody>
+	</table>
+	{$result->render()}
+</div>
+{/block}
+
+{block name="footer"}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__STATIC__/__VIEWCSS__lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="__STATIC__/__VIEWCSS__lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="__STATIC__/__VIEWCSS__lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript">
+
+//填写发货信息
+function deliver(title,url,w,h){
+	layer_show(title,url,w,h);
+}
+
+//查看商品清单
+function goods(title,url,w,h){
+	layer_show(title,url,w,h);
+}
+
+/*封号*/
+function user_stop(obj,id,y){
+	var data = {
+		'id':y,
+		'status':'3',
+	}
+	layer.confirm('确认要发货吗？',function(){
+		$.ajax({
+			type: 'POST',
+			url: '{:url(\'Orders/deliver_goods\')}',
+			dataType: 'json',
+			data: data,
+
+			success: function(data){
+				if(data.code == 1){
+					layer.msg(data.message,{icon: 5,time:1500,btn:['确定']},function(){
+						location.reload()
+					});
+				}
+				else
+				{
+					layer.msg(data.message,{icon: 2,time:1000});
+				}
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});	
+		
+	});
+}
+
+
+</script>
+{/block}

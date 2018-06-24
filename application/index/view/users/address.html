@@ -1,0 +1,89 @@
+{extend name="common/base" /}
+
+{block name="head"}
+	<head>
+		<meta charset="UTF-8">
+		<title>地址</title>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/__INDEX__css/common.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/__INDEX__css/address.css" />
+		<script src="__STATIC__/__INDEX__js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/__INDEX__js/jquery-migrate-1.2.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/__INDEX__js/common.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+{/block}
+
+{block name="content"}
+		<div class="content">
+			<div>
+		{include file="users/left_base"}
+
+				<!--右面上半部分-->
+				<div class="cont_right_top address">
+									
+					<h4>地址管理</h4>
+					<a href="{:url('Users/addressadd')}">新增地址</a>
+					<table border="0" cellspacing="0" cellpadding="0">
+						<thead>
+							<tr>
+								<th>收货人姓名</th>
+								<th>所在地区</th>
+								<th>详细地址</th>
+								<th>联系电话</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							{volist name="address" id="v"}
+							<tr>
+								<td>{$v.name}</td>
+								<td>{$v.region}</td>
+								<td>{$v.address}</td>
+								<td>{$v.phone}</td>
+								<td>
+									<input type="button" value="删除" onclick="a_delete({$v.id})">
+								</td>
+							</tr>
+							{/volist}
+						</tbody>
+					</table>
+					<!--page-->
+						{$address->render()}
+				
+				</div>
+			</div>
+		</div>
+{/block}
+
+{block name="footer"}
+<script type="text/javascript" src="__STATIC__/__ADMIN__lib/layer/2.4/layer.js"></script>
+		<script src="__STATIC__/__INDEX__js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/__INDEX__js/jquery-migrate-1.2.1.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			function a_delete(id){
+				var id = {
+					'id':id
+				}
+				layer.confirm('确认要删除吗？',function(){
+					$.ajax({
+						url:'{:url(\'Users/a_delete\')}',
+						type:'post',
+						data:id,
+						dataType:'json',
+
+						success:function(data){
+							if(data.code==1)
+							{
+								layer.msg(data.message,{icon:1,time:500},function(){
+										window.location.href=data.url;
+									})
+							}else{
+								layer.msg(data.message,{icon:2,time:1000})
+							}
+						}
+					})
+				})
+				
+			}
+
+		</script>
+{/block}

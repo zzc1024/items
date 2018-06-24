@@ -1,0 +1,177 @@
+{extend name="common/base" /}
+{block name='head'}
+
+	<head>
+		<meta charset="UTF-8">
+		<title>商品列表</title>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/__INDEX__css/common.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/__INDEX__css/shop_list.css" />
+		<script src="__STATIC__/__INDEX__js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/__INDEX__js/jquery-migrate-1.2.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/__INDEX__js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				var input1 = document.getElementsByTagName("input")[5];
+				input1.style.color = "gray";
+				input1.onfocus = function() {
+					if(this.value == "搜索关键字") {
+						this.value = "";
+						this.style.color = "gray";
+					}
+				}
+				input1.onblur = function() {
+					if(this.value == "") {
+						this.value = "搜索关键字";
+						this.style.color = "gray";
+					} else {
+						this.style.color = "gray";
+					}
+				}
+
+				function del() {
+					$(".coffee").click(function() {
+						$(this).parent().remove();
+					})
+				}
+				del();
+				{volist name="classify" id="v"}
+				$("#t"+{$v.classify_id}+" li").click(function() {
+					if($(".t"+{$v.classify_id}+"").eq(0).length > 0) {
+						$(".t"+{$v.classify_id}+"").eq(0).html($(this).eq(0).html() + "<span class='coffee'></span>");
+						$('input[name="search1"]').trigger('click');
+					} else {
+						$("#change").append("<li class='t"+{$v.classify_id}+"'>" + $(this).eq(0).html() + "<span class='coffee'></span></li>");
+						$('input[name="search1"]').trigger('click');
+					}
+					del();
+				})
+				{/volist}
+				$(".cont_top>div>div:first-child+div div ul li").click(function() {
+					$(this).addClass("current").siblings().removeClass("current");
+				})
+			})
+		</script>
+	</head>
+{/block}
+{block name='content'}
+
+		<!--第二部分-->
+
+		<div class="content">
+			<!--第二部分的上面部分-->
+			<div class="cont_top">
+				<!--第一行内容-->
+				<ul>
+					<span>当前位置：</span>
+					<li>
+						<a href="{:url('Index/index')}">首页</a> >
+					</li>
+					<li>
+						<a href="{:url('Shop/shop_list')}">商品分类 </a>
+					{volist name="series" id="v"}
+					{eq name="seriesid" value="$v.id"}
+						 >
+					</li>
+					<li>
+						<a href="{:url('Shop/shop_list')}?series={$seriesid}">{$v.name}</a>
+					{/eq}
+					{/volist}
+					</li>
+				</ul>
+				<!--红色框部分-->
+				<div>
+					<div>
+						<span>您已经选择:</span>
+						<ul id="change">
+							
+						</ul>
+						<img src="\static\img\jiahao.png" alt="" />
+					</div>
+					<div>
+						{volist name="classify" id="v"}
+						<div>
+							<span>{$v.name}：</span>
+							<ul id="t{$v.classify_id}">
+								{volist name="v.next" id="vo"}
+								<li value="{$vo.classify_id}">
+									{$vo.name}
+								</li>
+								{/volist}
+							</ul>
+						</div>
+						{/volist}
+						<div>
+							<span>价格：</span>
+							<form>
+								<input type="text" name="price" class="txt" />-<input type="text" name="price2" class="txt"/>
+							</form>
+
+							<form class="cont_up">
+								<span>关键字：</span>
+								<input type="text" name="contents1" />
+							</form>
+						</div>
+						<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="search1" value="确定搜索" onclick="search()" style="width:80px;height: 40px;" /></div>
+					</div>
+				</div>
+
+			</div>
+			<!--商品-->
+			<ul><li class="asd">
+			{include file="shop/product"}
+			</li></ul>
+		</div>
+{/block}
+		<!--第三部分-->
+
+{block name="footer"}
+		<script type="text/javascript">
+			$(function() {
+				$(".coffee").click(function() {
+					$(this).parent().remove();
+				})
+			})
+			var txt = document.getElementsByClassName("txt");
+			for(var i = 0; i < txt.length; i++) {
+				txt[i].onkeydown = function(ev) {
+					var n = ev.keyCode;
+					if(n < 48 || n > 57) {
+						return false;
+					}
+				}
+
+			}
+
+			function search(){
+				var checkID = [];
+				$("li.current").each(function(i){
+					checkID[i] = $(this).val();
+	     		});
+	     		
+	     		var data ={
+	     			'price':$('[name="price"]').val(),
+	     			'price2':$('[name="price2"]').val(),
+	     			'search':checkID,
+	     			'contents':$('[name="contents1"]').val()
+	     		};
+
+
+				if(data.search!=''||data.price!=''||data.price2!=''||data.contents!=''){
+					$.ajax({
+		     			url:'{:url(\'Shop/shop_list\')}',
+		     			type:'post',
+		     			data: data,
+		     			dataType:'json',
+
+		     			success: function(data){
+		     				if(data.code==1){
+		     					$("li.asd").html(data.html);
+		     				}
+		     			}
+		     		})
+				}
+	     		
+
+			}
+		</script>
+{/block}

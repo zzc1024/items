@@ -1,0 +1,94 @@
+{extend name="common/base" /}
+
+{block name="head"}
+<title>水印管理</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
+	<span class="c-gray en">&gt;</span>
+	水印管理
+	<span class="c-gray en">&gt;</span>
+	水印列表
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+</nav>
+<div class="page-container">
+	
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+		<a class="btn btn-primary radius" onclick="system_banner_add('添加水印','{:url(\'Waters/add\')}')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加水印</a>
+		</span>
+	</div>
+	<div class="mt-20">
+		<table class="table table-border table-bordered table-hover table-bg table-sort">
+			<thead>
+				<tr class="text-c">
+					<th width="120">ID</th>
+					<th width="150">水印名称</th>
+					<th >水印图片</th>
+					<th width="120">添加时间</th>
+					<th width="120">修改时间</th>
+					<th width="150">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{volist name="result" id="v"}
+				<tr class="text-c">
+					<td>{$v.id}</td>
+					<td>{$v.name}</td>
+					<td><img src="{$v.path}" alt="" style="width:400px;height: 100px;"></td>
+					<th>{$v.create_time}</th>
+					<th>{$v.update_time}</th>
+					<td class="td-manage">
+					<a title="编辑"  onclick="system_banner_edit('水印编辑','{:url('Waters/edit','id='.$v.id)}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="system_banner_del({$v.id})" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+				</tr>
+				{/volist}
+			</tbody>
+		</table>
+	</div>
+</div>
+{/block}
+
+{block name="footer"}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__STATIC__/__ADMIN__lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="__STATIC__/__ADMIN__lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="__STATIC__/__ADMIN__lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript">
+
+/*系统-栏目-添加*/
+function system_banner_add(title,url,w,h){
+	layer_show(title,url,w,h);
+}
+/*系统-栏目-编辑*/
+function system_banner_edit(title,url,id,w,h){
+	layer_show(title,url,w,h);
+}
+/*系统-栏目-删除*/
+function system_banner_del(w){
+	var data = {
+		'id':w,
+	}
+	layer.confirm('确认要删除吗？',function(){
+		$.ajax({
+			type: 'POST',
+			url: '{:url(\'Waters/water_delete\')}',
+			dataType: 'json',
+			data:data,
+			success: function(data){
+				if(data.code==1){
+					layer.msg(data.message,{icon:1,time:3000,btn:['确定']},function(){
+						location.reload()
+					});
+				}else{
+					layer.msg(data.message,{icon:2,time:3000,btn:['确定']});
+				}
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});
+	});
+}
+</script>
+{/block}
+

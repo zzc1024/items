@@ -1,0 +1,274 @@
+{extend name="common/base" /}
+
+{block name="head"}
+	<head>
+		<meta charset="UTF-8">
+		<title>订单列表</title>
+		<link rel="stylesheet" href="__STATIC__/__INDEX__css/common.css" />
+		<link rel="stylesheet" href="__STATIC__/__INDEX__css/order.css" />
+	</head>
+{/block}
+
+{block name="content"}
+		<!--第二部分-->
+		<div class="content">
+			{include file="users/left_base"}
+			<!--所有订单导航-->
+			<div>
+				<!--小导航-->
+				<ul class="order_nav">
+					{switch name="ordsta"}
+					{case value="99"}
+					<li class="current">
+						<a href="{:url('Users/order_search')}">订单列表</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=0">待付款</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=1">待发货</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=2">待收货</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=3">待评价</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=4">已完成</a>
+					</li>
+					{/case}
+
+					{case value="0"}
+					<li>
+						<a href="{:url('Users/order_search')}">订单列表</a>
+					</li>
+					<li class="current">
+						<a href="{:url('Users/order_search')}?ordsta=0">待付款</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=1">待发货</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=2">待收货</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=3">待评价</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=4">已完成</a>
+					</li>
+					{/case}
+
+					{case value="1"}
+					<li>
+						<a href="{:url('Users/order_search')}">订单列表</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=0">待付款</a>
+					</li>
+					<li class="current">
+						<a href="{:url('Users/order_search')}?ordsta=1">待发货</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=2">待收货</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=3">待评价</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=4">已完成</a>
+					</li>
+					{/case}
+
+					{case value="2"}
+					<li>
+						<a href="{:url('Users/order_search')}">订单列表</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=0">待付款</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=1">待发货</a>
+					</li>
+					<li class="current">
+						<a href="{:url('Users/order_search')}?ordsta=2">待收货</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=3">待评价</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=4">已完成</a>
+					</li>
+					{/case}
+					{case value="3"}
+					<li>
+						<a href="{:url('Users/order_search')}">订单列表</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=0">待付款</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=1">待发货</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=2">待收货</a>
+					</li>
+					<li class="current">
+						<a href="{:url('Users/order_search')}?ordsta=3">待评价</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=4">已完成</a>
+					</li>
+					{/case}
+					{case value="4"}
+					<li>
+						<a href="{:url('Users/order_search')}">订单列表</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=0">待付款</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=1">待发货</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=2">待收货</a>
+					</li>
+					<li>
+						<a href="{:url('Users/order_search')}?ordsta=3">待评价</a>
+					</li>
+					<li class="current">
+						<a href="{:url('Users/order_search')}?ordsta=4">已完成</a>
+					</li>
+					{/case}
+					{/switch}
+				</ul>
+
+				<!--订单号-->
+				<form action="{:url('Users/order_search')}" method="post">
+					<div>
+						<label for="name">订单号:</label>
+						<input type="text" id="name" name="order_no" />
+					</div>
+					<div>
+						<label for="time">下单时间:</label>
+						<input type="text" id="time1" name="time1" placeholder="搜索格式：20180601" />-<input type="text" id="time2" name="time2" placeholder="搜索格式：20180629" />
+					</div>
+					<div>
+						<input type="submit" value="搜索" style="text-indent:0px;width: 35px;height: 20px;" />
+					</div>
+				</form>
+
+				<!--所有订单-->
+				<div class="hide">
+
+					<table cellspacing="0" cellpadding="0">
+						<thead>
+							<tr>
+								<th>订单号</th>
+								<th>商品</th>
+								<th>订单状态</th>
+								<th>订单时间</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							{volist name="order_goods" id="v"}
+							<tr>
+								<td>
+									<div style=" height: auto;line-height: 21px;  word-wrap:break-word;  word-break:break-all;  overflow: hidden;padding: 5px;">{$v.order_no}</div>
+								</td>
+								<td>
+									<a href="{:url('Users/order_detail')}?ordid={$v.order_goods_id}" class="pic"><img src="{$v.product_path}" alt="" style="width: 70px;height: 70px;" /></a>
+									<p>
+										<a href="{:url('Users/order_detail')}?ordid={$v.order_goods_id}">{$v.product_name}</a>
+									</p>
+								</td>
+									<td>{switch name="v.order_status"}
+											{case value="0"}待付款 </td><td>{$v.create_time}</td><td><a href="{:url('Users/order_detail')}?ordid={$v.order_goods_id}">订单详情></a><br /><a href="{:url('Proess/sp_base')}?proess=2&ordid={$v.order_goods_id}">去付款</a>{/case}
+
+											{case value="1"}已付款 </td><td>{$v.create_time}</td><td><a href="{:url('Users/order_detail')}?ordid={$v.order_goods_id}">订单详情></a><br /><a href="##">提醒发货</a>{/case}
+
+											{case value="2"}已发货 </td><td>{$v.create_time}</td><td><a href="{:url('Users/order_detail')}?ordid={$v.order_goods_id}">订单详情></a><br><a href="{:url('Users/order_detail')}?ordid={$v.order_goods_id}">查看物流</a><a href="javascript:void(0)" onclick="confirms({$v.order_goods_id})">确认收货</a>{/case}
+
+											{case value="3"}待评价 </td><td>{$v.create_time}</td><td><a href="{:url('Users/order_detail')}?ordid={$v.order_goods_id}">订单详情></a><a href="{:url('Users/comment')}?ordid={$v.order_goods_id}">评价</a>{/case}
+
+											{case value="4"}完成 </td><td>{$v.create_time}</td><td><a href="{:url('Users/order_detail')}?ordid={$v.order_goods_id}">订单详情></a><a href="##"></a>{/case}
+
+											{case value="5"}申请退款中 </td><td>{$v.create_time}</td><td><a href="{:url('Users/order_detail')}?ordid={$v.order_goods_id}">订单详情></a><a href="##">取消申请</a>{/case}
+
+											{case value="6"}退货中 </td><td>{$v.create_time}</td><td><a href="{:url('Users/order_detail')}?ordid={$v.order_goods_id}">订单详情></a><a href="##">查看物流</a>{/case}
+
+											{case value="7"}已退款 </td><td>{$v.create_time}</td><td><a href="{:url('Users/order_detail')}?ordid={$v.order_goods_id}">订单详情></a><a href="##"></a>{/case}
+
+											{case value="8"}关闭 </td><td>{$v.create_time}</td><td><a href="{:url('Users/order_detail')}?ordid={$v.order_goods_id}">订单详情></a><a href="##"></a>{/case}
+										{/switch}
+
+								</td>
+							</tr>
+							{/volist}
+						</tbody>
+					</table>
+				</div>
+				<!--page-->
+				{$order_goods->render()}
+			</div>
+		</div>
+{/block}
+
+{block name="footer"}
+		<script src="__STATIC__/__INDEX__js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/__INDEX__js/jquery-migrate-1.2.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/__INDEX__js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="__STATIC__/__ADMIN__lib/layer/2.4/layer.js"></script>
+		<script type="text/javascript">
+			var txt = document.getElementById("name");
+			txt.onkeydown = function(ev) {
+				var n = ev.keyCode;
+				if(n < 48 || n > 57) {
+					return false;
+				}
+			}
+			var time1 = document.getElementById("time1");
+			time1.onkeydown = function(ev) {
+				var n = ev.keyCode;
+				if(n < 48 || n > 57) {
+					return false;
+				}
+			}
+			var time2 = document.getElementById("time2");
+			time2.onkeydown = function(ev) {
+				var n = ev.keyCode;
+				if(n < 48 || n > 57 ) {
+						return false;
+				}
+			}
+
+			function confirms(id){
+				var data = {
+					'id':id,
+				};
+				layer.confirm('确认要确认收货吗？',function(){
+					$.ajax({
+						url:'{:url(\'Users/confirm\')}',
+						type:'post',
+						data:data,
+						dataType:'json',
+
+						success:function(data){
+							if(data.code==1){
+								layer.msg(data.message,{icon:1,time:1000},function(){
+									window.location.reload();
+								});
+							}
+							else
+							{
+								layer.msg(data.message,{icon:2,time:1000});
+							}
+						}
+					})
+				})
+			}
+
+		</script>
+{/block}

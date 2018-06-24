@@ -1,0 +1,46 @@
+
+<link rel="stylesheet" type="text/css" href="__STATIC__/__INDEX__css/pay_success.css" />
+<script src="__STATIC__/__INDEX__js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+<script src="__STATIC__/__INDEX__js/jquery-migrate-1.2.1.js" type="text/javascript" charset="utf-8"></script>
+<script src="__STATIC__/__INDEX__js/common.js" type="text/javascript" charset="utf-8"></script>
+			<!--主要内容-->
+			<div class="cont_top">
+				<!--左边部分-->
+				<div class="cont_left">
+					<p>
+						<img src="\static\img\duide.png" alt="" /><span>支付成功，我们会尽快为您发货！</span>
+					</p>
+					<div>
+						<div>
+							<p>
+								<span>在线支付：<span>¥{$amount}</span>元</span>
+								<span>您的订单已在处理中......</span>
+							</p>
+							<p>
+								<a href="{:url('Users/order_detail')}?ordid={$ordid}">查看订单</a>
+								<a href="{:url('Users/order_detail')}?ordid={$ordid}">收货地址</a>
+								<a href="{:url('Shop/shop_list')}" class="shop">继续购物>></a>
+							</p>
+						</div>
+						<div>
+							<img src="\static\img\kuaidiyuan.png" alt="" />
+						</div>
+					</div>
+					
+				</div>
+				<!--右边部分-->
+				<div class="cont_right">
+					<div class="cont_right_left">
+						<img src="\static\img\erweima.png" alt="" />
+						<span>扫码下载APP</span><span>随时查看物流，享受更多优惠与特权</span>
+					</div>
+					<div class="cont_right_right">
+						<img src="\static\img\tubiao.png"/>
+						<span>麦斯威尔</span>
+						<span>滴滴香浓，意犹未尽</span>
+					</div>
+				</div>
+			</div>
+			
+			<!--返回首页-->
+			<a href="{:url('Index/index')}">返回首页</a>

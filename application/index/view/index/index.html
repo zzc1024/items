@@ -1,0 +1,144 @@
+{extend name="common/base" /}
+{block name='head'}
+	<head>
+		<meta charset="utf-8" />
+		<title>首页</title>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/__INDEX__css/common.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/__INDEX__css/index.css" />
+		<script src="__STATIC__/__INDEX__js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/__INDEX__js/jquery-migrate-1.2.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/__INDEX__js/common.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+{/block}
+{block name="content"}
+		<div class="content">
+
+			<!--轮播图-->
+			<div class="banner">
+				<ul class="btn">
+					<li class="on"></li>
+					<li></li>
+					<li></li>
+				</ul>
+				<div class="container_all">
+					<ul>
+						{volist name="banner" id="v"}
+						<li>
+							<img src="{$v.path}" />
+						</li>
+						{/volist}
+					</ul>
+				</div>
+				
+			</div>
+
+			<!--产品-->
+			<div class="product">
+				<!--产品上面部分-->
+				<div class="title">
+					<img src="\static\img\coffee.png" alt="" />
+					<h1>最新商品</h1>
+					<span>new product</span>
+					<hr />
+				</div>
+				<!--产品中间部分-->
+				<ul>
+					{volist name="exhibition" id="v"}
+					{eq name="v.title" value="1"}
+					<li>
+						<a href="{:url('Shop/shop_goods')}?pro={$v.pid}"><img src="{$v.path}" alt="" /></a>
+						<h1><a href="{:url('Shop/shop_goods')}?pro={$v.pid}">{$v.name}</a></h1>
+						<hr />
+						<p>
+							<a href="{:url('Shop/shop_goods')}?pro={$v.pid}">{$v.content}</a>
+						</p>
+						<img src="\static\img\index.png" alt="" />
+					</li>
+					{/eq}
+					{/volist}
+				</ul>
+			</div>
+
+			<!--热门商品-->
+			<div class="commodities">
+				<!--热门上面部分-->
+				<div class="title">
+					<img src="\static\img\coffee.png" alt="" />
+					<h1>热门商品</h1>
+					<span>Hot Commodities</span>
+					<hr />
+				</div>
+				<!--热门中间部分-->
+				<ul class="com_mid">
+					<!--中间左边部分-->
+					{volist name="exhibition" id="v"}
+					{eq name="v.title" value="2"}
+					<li>
+						<a href="{:url('Shop/shop_goods')}?pro={$v.pid}"><img src="{$v.path}" alt="" /></a>
+						<div>
+							<a href="{:url('Shop/shop_goods')}?pro={$v.pid}">{$v.name}</a>
+						</div>
+					</li>
+					{/eq}
+					{/volist}
+				</ul>
+
+			</div>
+
+			<!--推荐商品-->
+			<div class="recommend">
+				<!--推荐商品上面部分-->
+				<div class="title">
+						<img src="\static\img\coffee.png" alt="" />
+						<h1>推荐商品</h1>
+						<hr />
+				</div>
+
+				{volist name="exhibition" id="v"}
+				{eq name="v.title" value="3"}	
+					<div class="title_bot">
+						<span>CafeMocha</span>
+						<p>{$v.abstract}</p>
+						<div>
+							<a href="{:url('Shop/shop_goods')}?pro={$v.pid}"><img src="\static\img\exhibition\20180601\10f34a50bb99c4f48e3f9ffe6ec74ba8.png" /></a>
+						</div>
+						<a href="{:url('Shop/shop_list')}" class="more">查看更多</a>
+					</div>
+				<!--推荐商品中间部分-->
+				<div class="rec_mid">
+					<!--推荐中间左边部分-->
+					<div class="rec_mid_left">
+						<a href="{:url('Shop/shop_goods')}?pro={$v.pid}">
+							<img src="{$v.path}" />
+						</a>
+						<div class="rec_hide">
+							<h2>{$v.name}</h2>
+							<a href="{:url('Shop/shop_list')}">查看更多</a>
+						</div>
+					</div>
+					<!--推荐中间右边部分-->
+					<div class="rec_mid_right">
+						{$v.content}
+					</div>
+				</div>
+				{/eq}
+				{/volist}
+			</div>
+			<!--爆款推荐-->
+			<div class="hot">
+				<div class="title">爆款推荐 HOT</div>
+				<p>卡布奇诺是一种加入以同量的意大利特浓咖啡和蒸汽泡沫牛奶相混合的意大利咖啡。此时咖啡的颜色，就像卡布奇诺教会的修士在深褐色的外衣上覆上一条头巾一样，咖啡因此得名。传统的卡布奇诺咖啡是三分之一浓缩咖啡，三分之一蒸汽牛奶和三分之一泡沫牛奶，并在上面撒上小颗粒的肉桂粉末。</p>
+				<ul>
+				{volist name="exhibition" id="v"}
+				{eq name="v.title" value="4"}
+					<li>
+						<a href="{:url('Shop/shop_goods')}?pro={$v.pid}"><img src="{$v.path}" alt="" /></a>
+						<a href="{:url('Shop/shop_goods')}?pro={$v.pid}">{$v.name} ￥{$v.price}</a>
+					</li>
+				{/eq}
+				{/volist}
+				</ul>
+				<a href="{:url('Shop/shop_list')}">MORE</a>
+			</div>
+		</div>
+{/block}

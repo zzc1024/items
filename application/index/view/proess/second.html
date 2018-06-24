@@ -1,0 +1,89 @@
+
+<link rel="stylesheet" type="text/css" href="__STATIC__/__INDEX__css/pay.css" />
+			<!--进度条-->
+			<div class="cont_top">
+				<ul>
+					<li>
+						<hr />
+						<div>1</div>
+						<p>我的购物车</p>
+					</li>
+					<li>
+						<hr />
+						<div>2</div>
+						<p>填写核对订单信息</p>
+					</li>
+					<li class="one">
+						<hr />
+						<div>3</div>
+						<p>成功提交订单</p>
+					</li>
+				</ul>
+			</div>
+			<!--成功支付-->
+			<div class="cont_mid">
+				<div>
+					<img src="\static\img\duigou.png" alt="" />
+				</div>
+				<div>
+					<p>您的订单已生成，请尽快付款</p>
+					<p>应付金额：
+						<span>￥{$price_amount}</span>
+					</p>
+					<p>请您在提交订单后<span>72</span>小时内完成支付，否则订单会自动取消</p>
+				</div>
+			</div>
+										<!-- 提交支付宝付款所需数据 -->
+										<form action="{:url('Proess/zfbpay')}" method="post">
+											<input type="hidden" name="subject" value="{$subject}">
+											<input type="hidden" name="out_trade_no" value="{$out_trade_no}">
+											<input type="hidden" name="total_amount" value="{$price_amount}">
+											<input type="submit" name="zfbsub" style="display:none;">
+										</form>
+			<!--付款方式-->
+			<div class="cont_bot">
+				<p>您可以选择付款方式</p>
+				<!--付款方式-->
+				<div class="pay_top">
+					<ul>
+						<li>
+							<p>平台支付</p>
+							<ul>
+								<li>
+									<label for="cart_q"></label>
+									<label for="cart_q" class="one">
+										<img src="\static\img\zhifubaoorder.png" onclick="zfbpay()"  />
+									</label>
+								</li>
+							</ul>
+						</li>
+					</ul>
+
+					<div>
+						<label for="cart_o"></label>
+						<p>
+							<span class="card">余额</span><span>{$balance}</span>
+						</p>
+						<p class="rmb">支付
+							<span>¥{$price_amount}</span> 元
+						</p>
+					</div>
+
+				</div>
+				<!--输入密码-->
+				<div class="pay_bot">
+					<p>
+						<img src="\static\img\zhengque.png" alt="" />
+						<span>您在安全的环境中，请放心使用！</span>
+					</p>
+					<p>支付密码：</p>
+					<!--六位密码-->
+					<div>
+						<div class="box"></div>
+						<p>请输入6位数字支付密码</p>
+					</div>
+					<!--按钮-->
+					<a href="javascript:void(0)" onclick="pay()">确认付款</a>
+				</div>
+
+			</div>

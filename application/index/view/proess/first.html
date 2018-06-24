@@ -1,0 +1,132 @@
+<link rel="stylesheet" href="__STATIC__/__INDEX__css/comfirm_order.css" />
+			<!--进度条-->
+			<div class="cont_top">
+				<ul>
+					<li>
+						<hr />
+						<div>1</div>
+						<p>我的购物车</p>
+					</li>
+					<li>
+						<hr />
+						<div class="one">2</div>
+						<p>填写核对订单信息</p>
+					</li>
+					<li>
+						<hr />
+						<div>3</div>
+						<p>成功提交订单</p>
+					</li>
+				</ul>
+			</div>
+			<!--填写收货地址-->
+			<form action="{:url('Proess/sp_base')}?proess=2" method="post">
+			<div class="cont_mid">
+				<div class="add_top">填写收货地址</div>
+				<div class="add_bot">
+					<ul>
+						{volist name="address" id="v"}
+						<li>
+							<div style="display:none;"><input type='checkbox' name='address_id' value="{$v.id}"/></div>
+							<span>
+								<img src="\static\img\tel.png" alt="" />{$v.name}  {$v.phone}
+							</span>
+							<span>
+								<img src="\static\img\dibiao.png" alt="" />{$v.region}
+							</span>
+							<span class="on">
+								<img src="\static\img\shijian.png" alt="" />{$v.address}
+							</span>
+						</li>
+						{/volist}
+						<li onclick="addressadd()">
+							<img src="\static\img\jiahao222.png" alt="" /><br />
+							<span>添加地址</span>
+					</li>
+					</ul>
+					
+				</div>
+			</div>
+
+			<!--确认订单信息-->
+			<div class="cont_bot">
+				<p>确认订单信息</p>
+				<table cellpadding="0" cellspacing="0">
+					<thead>
+						<tr>
+							<th>商品信息</th>
+							<th>单价</th>
+							<th>数量</th>
+							<th>金额</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+					{volist name="shop_cair_pro" id="v"}
+					{range name="v.id" value="$check" type="in"}
+						<tr>
+							<td class="pro">
+								<a href="{:url('Shop/shop_goods')}?pro={$v.product_id}&att={$v.attribute_id}"><img src='{$v.path}' style="width: 70px;height: 61px;" /></a>
+							<p>
+								<a href="{:url('Shop/shop_goods')}?pro={$v.product_id}&att={$v.attribute_id}">{$v.product_name}{$v.attribute_name}</a>
+							</p>
+							</td>
+							<td class="pri">
+								<p>￥{$v.price}</p>
+								<p>￥{$v.original_price}</p>
+							</td>
+							<td class="num">
+								<div class="input-bth">
+									<span class="prd_subnum">-</span>
+									<input type="text" name="product_count[]" value="{$v.product_count}" class="prd_num txt" />
+									<span class="prd_addnum">+</span>
+								</div>
+							</td>
+							<td class="amount">
+								<span>￥0.00</span>
+							</td>
+							<td>
+								<a href="##" class="cel">删除</a>
+							</td>
+							<input type="hidden" name="product_name[]" value="{$v.product_name}{$v.attribute_name}">
+							<input type="hidden" name="product_price[]" value="{$v.price}">
+							<input type="hidden" name="product_original_price[]" value="{$v.original_price}">
+							<input type="hidden" name="product_id[]" value="{$v.product_id}">
+							<input type="hidden" name="attribute_id[]" value="{$v.attribute_id}">
+							<input type="hidden" name="path[]" value="{$v.path}">
+							<input type="hidden" name="amount[]" value="" class="amount_a">
+							<input type="hidden" name="shop_cart_id[]" value="{$v.id}">
+						</tr>
+					{/range}
+					{/volist}
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="4">
+								<form action="##">
+									<span>配送方式：</span>
+									<select>
+										<option>卖家承担</option>
+									</select>
+								</form>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4" class="text">
+									<span style="float: left;">订单留言:</span>
+									<textarea name="words" style="width: 380px;height: 80px;float: left;resize: none;margin-left: 15px;text-indent: 5px;padding: 5px;"></textarea>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+				<!--提交订单-->
+				<div>
+					<input type="hidden" name="amount_total" value="">
+					<p class="tol">商品总价（不含运费）<span class="totalamount">￥00.00</span></p>
+					<p>应付金额:<span class="totalamount">￥00.00</span></p>
+					<a href="javascript:void(0);" onclick="settlement()">提交订单</a>
+				</div>
+			</div>
+			<div style="display:none;"><input type="submit" name="submit"></div>
+			</form>
+

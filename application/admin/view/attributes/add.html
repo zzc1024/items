@@ -1,0 +1,62 @@
+{extend name="common/base" /}
+
+{block name="head"}
+<title>添加商品属性</title>
+</head>
+<body>
+<div class="page-container">
+	<form class="form form-horizontal" id="form-translate-add">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-3">
+						<span class="c-red">*</span>
+						商品属性名称：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="" name="name">
+					</div>
+					<div class="col-3">
+					</div>
+				</div>
+
+		<div class="row cl">
+			<div class="col-9 col-offset-3">
+				<input onClick="translateadd()" class="btn btn-primary radius" type="button" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</div>
+{/block}
+
+{block name="footer"}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__STATIC__/__ADMIN__lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="__STATIC__/__ADMIN__lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="__STATIC__/__ADMIN__lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="__STATIC__/__ADMIN__lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript">
+
+function translateadd(){
+	var data = {
+		'name':$('[name="name"]').val()
+	}
+
+	$.ajax({
+		url:'{:url(\'Attributes/add\')}',
+		type:'post',
+		dataType:'json',
+		data: data,
+
+		success: function(data){
+			if(data.code==1){
+				layer.msg(data.message,{icon:1,time:3000,btn:['确定']},function(){
+					parent.location.reload()
+				});
+			}else{
+				layer.msg(data.message,{icon:2,time:3000,btn:['确定']});
+			}
+		}
+	})
+}
+
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+{/block}

@@ -1,0 +1,142 @@
+{extend name="common/base" /}
+
+{block name="head"}
+<title>添加管理员 - 管理员管理 - H-ui.admin v3.1</title>
+<meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
+<meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+</head>
+<body>
+<article class="page-container">
+  <form class="form form-horizontal" id="form-admin-add">
+  <div class="row cl">
+    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>管理员昵称：</label>
+    <div class="formControls col-xs-8 col-sm-9">
+      <input type="hidden" name="admin_id" value="{$result['admin_id']}">
+      <input type="text" class="input-text" value="{$result['admin_name']}" placeholder="" id="adminName" name="admin_name">
+    </div>
+  </div>
+  <div class="row cl">
+    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>账号：</label>
+    <div class="formControls col-xs-8 col-sm-9">
+      <input type="text" class="input-text" value="{$result['admin_account']}" placeholder="" id="adminName" name="admin_account" readonly="readonly">
+    </div>
+  </div>
+  <div class="row cl">
+    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>初始密码：</label>
+    <div class="formControls col-xs-8 col-sm-9">
+      <input type="password" class="input-text" autocomplete="off" value="" placeholder="密码" id="password" name="admin_password">
+    </div>
+  </div>
+  <div class="row cl">
+    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>确认密码：</label>
+    <div class="formControls col-xs-8 col-sm-9">
+      <input type="password" class="input-text" autocomplete="off"  placeholder="确认新密码" id="password2" name="admin_password2">
+    </div>
+  </div>
+  <div class="row cl">
+    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
+    <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+    {eq name="$result['admin_sex']" value='1'}
+      <div class="radio-box">
+        <input name="admin_sex" type="radio" id="sex-1" checked>
+        <label for="sex-1">男</label>
+      </div>
+      <div class="radio-box">
+        <input type="radio" id="sex-2" name="admin_sex">
+        <label for="sex-2">女</label>
+      </div>
+    {else/}
+      <div class="radio-box">
+        <input name="admin_sex" type="radio" id="sex-1">
+        <label for="sex-1">男</label>
+      </div>
+      <div class="radio-box">
+        <input type="radio" id="sex-2" name="admin_sex" checked>
+        <label for="sex-2">女</label>
+      </div>
+    {/eq}
+    </div>
+  </div>
+  <div class="row cl">
+    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>手机：</label>
+    <div class="formControls col-xs-8 col-sm-9">
+      <input type="text" class="input-text" value="{$result['admin_phone']}" placeholder="" id="phone" name="admin_phone">
+    </div>
+  </div>
+  <div class="row cl">
+    <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>邮箱：</label>
+    <div class="formControls col-xs-8 col-sm-9">
+      <input type="text" class="input-text" name="admin_email" id="email" value="{$result['admin_email']}">
+    </div>
+  </div>
+  <div class="row cl">
+    <label class="form-label col-xs-4 col-sm-3">角色：</label>
+    <div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
+      <select class="select" name="role_id" size="1">
+      {volist name="res" id="v"}
+      {eq name="result2.role_id" value="$v.role_id"}
+        <option value="{$v.role_id}" checked="checked">{$v.role_name}</option>
+      {else/}
+        <option value="{$v.role_id}">{$v.role_name}</option>
+      {/eq}
+      {/volist}
+      </select>
+      </span> </div>
+  </div>
+  <div class="row cl">
+    <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+      <input class="btn btn-primary radius" type="button" onclick="admin_add()" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+    </div>
+  </div>
+  </form>
+</article>
+{/block}
+
+{block name="footer"}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__STATIC__/__VIEWCSS__lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="__STATIC__/__VIEWCSS__lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="__STATIC__/__VIEWCSS__lib/jquery.validation/1.14.0/messages_zh.js"></script> 
+<script type="text/javascript">
+
+function admin_add(){
+  var data = {
+    'admin_id':$('[name="admin_id"]').val(),
+    'admin_name':$('[name="admin_name"]').val(),
+    'admin_account':$('[name="admin_account"]').val(),
+    'admin_password':$('[name="admin_password"]').val(),
+    'admin_password2':$('[name="admin_password2"]').val(),
+    'admin_sex':$('[name="admin_sex"]').val(),
+    'admin_phone':$('[name="admin_phone"]').val(),
+    'admin_email':$('[name="admin_email"]').val(),
+    'role_id':$('[name="role_id"]').val()
+  }
+  $.ajax({
+    url:'{:url(\'Admins/edit\')}',
+    type: 'post',
+    data: data,
+    dataType: 'json',
+
+    success: function(data){
+      if(data.code==1){
+        layer.msg(data.message,{icon:1,time:3000,btn:['确定']},function(){
+          parent.location.reload()
+        })
+      }else{
+        layer.msg(data.message,{icon:2,time:3000,btn:['确定']})
+      }
+    },
+
+    error:function(data) {
+        console.log(data.message);
+    },
+
+  })
+
+}
+
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>
+{/block}

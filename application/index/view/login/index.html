@@ -1,0 +1,89 @@
+{extend name="common/base" /}
+{block name='head'}
+	<head>
+		<meta charset="UTF-8">
+		<title>登陆</title>
+		<link rel="stylesheet" href="__STATIC__/__INDEX__css/common.css" />
+		<link rel="stylesheet" href="__STATIC__/__INDEX__css/login.css" />
+		<script src="__STATIC__/__INDEX__js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/__INDEX__js/jquery-migrate-1.2.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/__INDEX__js/common.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+{/block}
+{block name="content"}
+
+		<!--第二部分-->
+		<div class="content">
+			<!--左边图片-->
+			<img src="\static\img\goin.png" alt="" />
+			<!--右边登录-->
+			<div>
+				<!--登录上面部分-->
+				<div class="cont_top">
+					<span>会员登录</span>
+					<img src="\static\img\denglu.png" alt="" />
+				</div>
+				<!--登录中间部分-->
+				<div class="cont_mid">
+					<form>
+						<div>
+							<label for="name">账号：</label>
+							<input type="text" id="name" name="account" />
+						</div>
+						<div>
+							<label for="password">密码：</label>
+							<input type="password" id="password" name="password" />
+						</div>
+						<div>
+							<label for="yan">验证码：</label>
+							<input type="text" id="yan" name="code" />
+							<img id="qwe"  src="{:captcha_src()}" onclick="this.src='{:captcha_src()}'" style="width:90px;height: 30px;" />
+							<a class="act" onclick="query();" href="javascript:;">
+								<span>看不清，换一张</span>
+							</a>
+						</div>
+						<input type="button" value="登录" onclick="login()" />
+					</form>
+					<a href="{:url('Login/retrieve')}">忘加密码？</a>
+					<a href="{:url('Login/register')}" class="free">免费注册</a>
+				</div>
+			</div>
+
+		</div>
+{/block}
+{block name="footer"}
+		
+		<script type="text/javascript" src="__STATIC__/__ADMIN__lib/layer/2.4/layer.js"></script>
+		<script type="text/javascript">
+			
+		function login(){
+			var data={
+				'account':$('[name="account"]').val(),
+				'password':$('[name="password"]').val(),
+				'code':$('[name="code"]').val()
+			}
+
+			$.ajax({
+				url:'{:url(\'Login/login\')}',
+				type:'post',
+				data:data,
+				dataType:'json',
+
+				success:function(data){
+					if(data.code==1){
+						layer.msg(data.message,{icon:1,time:3000,btn:['确定']},function(){
+							window.location.href=data.url;
+						})
+					}else{
+						layer.msg(data.message,{icon:2,time:1500})
+					}
+				}
+			})
+		}
+
+	    function query(){
+	    	$('#qwe').attr("src","{:captcha_src()}");
+	    }
+		</script>
+{/block}

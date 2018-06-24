@@ -1,0 +1,156 @@
+{extend name="common/base" /}
+
+{block name="head"}
+	<head>
+		<meta charset="UTF-8">
+		<title>我的评价</title>
+		<link rel="stylesheet" href="__STATIC__/__INDEX__css/common.css" />
+		<link rel="stylesheet" href="__STATIC__/__INDEX__css/comment.css" />
+		<script src="__STATIC__/__INDEX__js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/__INDEX__js/jquery-migrate-1.2.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/__INDEX__js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				var input1 = document.getElementsByTagName("textarea")[0];
+				input1.style.color = "gray";
+				input1.onfocus = function() {
+					if(this.value == "感谢您的宝贵的建议！") {
+						this.value = "";
+						this.style.color = "gray";
+					}
+				}
+				input1.onblur = function() {
+					if(this.value == "") {
+						this.value = "感谢您的宝贵的建议！";
+						this.style.color = "gray";
+					} else {
+						this.style.color = "gray";
+					}
+				}
+				$(".cont_right_bot>div>div").hover(function() {
+					var index = $(this).index()-1;
+					console.log(index)
+					for(var i = 0; i <= index; i++) {
+						
+						$(".cont_right_bot>div>div").eq(i).addClass("star2");
+						console.log($(".cont_right_bot>div>div"))
+					}
+				}, function() {
+					for(var i = 0; i < 5; i++) {
+						$(".cont_right_bot>div>div").eq(i).removeClass("star2");
+					}
+				})
+
+				$(".cont_right_bot>div>div").click(function() {
+					var index = $(this).index()-1;
+					for(var i = 0; i < 5; i++) {
+						$(".cont_right_bot>div>div").eq(i).removeClass("star3");
+					}
+					
+					for(var i = 0; i <= index; i++) {
+						$(".cont_right_bot>div>div").eq(i).addClass("star3");
+					}
+				})
+			})
+		</script>
+	</head>
+{/block}
+
+{block name="content"}
+		<div class="content">
+			<div>
+				{include file="users/left_base"}
+				
+				<!--右面部分-->
+				<div class="cont_right">
+					<!--产品详情-->
+					{volist name="order_product" id="v"}
+					<div class="cont_right_top">
+						<a href="{:url('Shop/shop_goods')}?pro={$v.product_id}&att={$v.attribute_id}">
+							<img src="{$v.product_path}" style="width: 70px;height: 70px;" />
+						</a>
+						<p>
+							<a href="{:url('Shop/shop_goods')}?pro={$v.product_id}&att={$v.attribute_id}">{$v.product_name}</a>
+						</p>
+						<p>
+							<span>￥{$v.product_price}</span><br />
+							<span>￥{$v.product_original_price}</span>
+						</p>
+					</div>
+					<!--建议-->
+					<div class="cont_right_mid">
+						<!-- <form action="{:url('Users/add_comment')}" method="post"> -->
+						<input type="hidden" name="product_id" value="{$v.product_id}">
+						<textarea class="content1" value=""></textarea>
+						<!-- <input type="hidden" name="score" value=""> -->
+						<!-- <input type="submit" name="submit" style="display:none;"> -->
+						<!-- </form> -->
+					</div>
+					{/volist}
+
+					<!--评价-->
+					<div class="cont_right_bot">
+						<div>
+							<span>给我的评分：</span>
+							<div class="star"></div>
+							<div class="star"></div>
+							<div class="star"></div>
+							<div class="star"></div>
+							<div class="star"></div>
+							<span>很棒棒哦！</span>
+						</div>
+						<a href="javascript:void(0)" onclick="add_momment()">发表评论</a>
+					</div>
+				</div>
+			</div>
+{/block}
+
+{block name="footer"}
+			<script type="text/javascript" src="__STATIC__/__ADMIN__lib/layer/2.4/layer.js"></script>
+			<script type="text/javascript">
+				
+				function add_momment(){
+					if($('.star3').length!=0){
+						var productID = [];
+						$('input[name="product_id"]').each(function(i){
+				             productID[i] = $(this).val();
+				         });
+
+						var content = [];
+						$('.content1').each(function(i){
+				             content[i] = $(this).val();
+				         });
+
+						var data = {
+							'score':$('.star3').length,
+							'product_id':productID,
+							'content':content,
+							'order_goods_id':'{$order_goods_id}',
+						};
+
+						$.ajax({
+							url:'{:url(\'Users/add_comment\')}',
+							type:'post',
+							data:data,
+							dataType:'json',
+
+							success:function(data){
+								if(data.code==1){
+									layer.msg(data.message,{icon:1,time:1000},function(){
+										window.location.href=data.url;
+									});
+								}else{
+									layer.msg(data.message,{icon:2,time:100});
+								}
+							}
+						})
+
+					}else{
+						layer.msg('请选择评分',{icon:2,time:1000});
+					}
+				}
+
+				
+
+			</script>
+{/block}

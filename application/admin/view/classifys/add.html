@@ -1,0 +1,71 @@
+{extend name="common/base" /}
+{block name='head'}
+<title>添加产品分类</title>
+</head>
+<body>
+<div class="page-container">
+	<form class="form form-horizontal" id="form-user-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>
+				上级分类：</label></label>
+			<div class="formControls col-xs-6 col-sm-6">
+				<select name="classify_pid" class="select" size="1">
+					<option value="0" selected>顶级分类</option>
+					
+					{foreach name="data" item="vo" key="k"}	
+						<option value="{$vo.classify_id}">{$vo.name}</option>
+					{/foreach}
+
+				</select>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">
+				<span class="c-red"></span>
+				分类名称：</label>
+			<div class="formControls col-xs-6 col-sm-6">
+				<input type="text" class="input-text" id="user-name" name="name">
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-9 col-offset-2">
+				<input class="btn btn-primary radius" type="button" onClick="classifyadd()" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</div>
+{/block}
+
+{block name="footer"}
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__STATIC__/__ADMIN__lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="__STATIC__/__ADMIN__lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="__STATIC__/__ADMIN__lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript">
+
+function classifyadd(){
+	var data = {
+		'classify_pid':$('[name="classify_pid"]').val(),
+		'name':$('[name="name"]').val()
+	}
+	$.ajax({
+		url:'{:url(\'Classifys/add\')}',
+		type: 'post',
+		data: data,
+		dataType: 'json',
+
+		success: function(data){
+			if(data.code==1){
+		        layer.msg(data.message,{icon:1,time:1500,btn:['确定']},function(){
+		          parent.location.reload()
+		        })
+		    }else{
+		        layer.msg(data.message,{icon:2,time:1500,btn:['确定']})
+		    }
+		}
+	})
+}
+
+</script>
+{/block}

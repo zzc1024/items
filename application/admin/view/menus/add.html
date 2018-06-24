@@ -1,0 +1,121 @@
+{extend name="common/base" /}
+{block name="head"}
+<title>添加菜单</title>
+</head>
+<body>
+<div class="page-container">
+	<form action="" method="post" class="form form-horizontal" id="form-category-add">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-3">
+						<span class="c-red"></span>
+						上级菜单：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="select-box">
+						<select class="select" id="sel_Sub" name="menu_pid" onchange="SetSubID(this);">
+							<option value="0">最上级菜单</option>
+							{volist name="result" id="v"}
+							<option value="{$v.menu_id}">{$v.menu_name}</option>
+							{/volist}
+						</select>
+						</span>
+					</div>
+					<div class="col-3">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-3">
+						<span class="c-red">*</span>
+						菜单名称：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="" name="menu_name">
+					</div>
+					<div class="col-3">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-3">
+						<span class="c-red"></span>
+						控制器文件名：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="" name="controller">
+					</div>
+					<div class="col-3">
+					</div>
+				</div>
+				
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-3">
+						<span class="c-red"></span>
+						视图文件名：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="" name="action">
+					</div>
+					<div class="col-3">
+					</div>
+				</div>
+				
+
+		<div class="row cl">
+			<div class="col-9 col-offset-3">
+				<input onClick="menuadd()" class="btn btn-primary radius" type="button" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</div>
+{/block}
+{block name="footer"}
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#tab-category").Huitab({
+		index:0
+	});
+	$("#form-category-add").validate({
+		rules:{
+			
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			//$(form).ajaxSubmit();
+			var index = parent.layer.getFrameIndex(window.name);
+			//parent.$('.btn-refresh').click();
+			parent.layer.close(index);
+		}
+	});
+});
+
+function menuadd(){
+	var data = {
+		'menu_pid':$('[name="menu_pid"]').val(),
+		'menu_name':$('[name="menu_name"]').val(),
+		'controller':$('[name="controller"]').val(),
+		'action':$('[name="action"]').val()
+	}
+
+	$.ajax({
+		url:'{:url(\'Menus/add\')}',
+		type:'post',
+		dataType:'json',
+		data: data,
+
+		success: function(data){
+			if(data.code==1){
+				layer.msg(data.message,{icon:1,time:3000,btn:['确定']},function(){
+					parent.location.reload();
+				});
+			}else{
+				layer.msg(data.message,{icon:2,time:3000,btn:['确定']});
+			}
+		}
+	})
+}
+
+</script>
+{/block}
